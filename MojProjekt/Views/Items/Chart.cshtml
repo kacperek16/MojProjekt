@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Wykres kategorii produktów";
+}
+
+<h2 class="text-center">Liczba produktów w każdej kategorii</h2>
+
+<canvas id="categoryChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/Items/GetItemsByCategory')
+            .then(response => response.json())
+            .then(data => {
+                const categories = data.map(item => item.category);
+                const counts = data.map(item => item.count);
+
+                const ctx = document.getElementById('categoryChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: categories,
+                        datasets: [{
+                            label: 'Liczba produktów',
+                            data: counts,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Błąd ładowania danych:', error));
+    });
+</script>

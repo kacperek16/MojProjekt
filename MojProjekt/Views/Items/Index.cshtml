@@ -1,35 +1,45 @@
 ﻿@model List<MojProjekt.Models.Item>
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista wydatków";
 }
 
-<h3>Index</h3>
+<div class="banner">
+    <h1 class="text-center">Lista wydatków</h1>
+</div>
 
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <a asp-action="GenerateProducts" class="btn btn-success">Generate Products</a>
+        </div>
+        <div class="col-md-6 text-right">
+            <a asp-action="ExportToExcel" class="btn btn-primary">Export to Excel</a>
+        </div>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">Cena: @item.Price.ToString("N2") $</p>
+                        <p class="card-text">Numer seryjny: @item.SerialNumber?.Name</p>
+                        <p class="card-text">Kategoria: @item.Category?.Name</p>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Price</th>
-			<th>Serial Number</th>
-			<th>Category</th>
-		</tr>
-
-	</thead>
-	<tbody>
-		@foreach (var item in Model) 
-		{
-			<tr>
-				<td>@item.Name</td>
-				<td>@item.Price.ToString("N2") $</td>
-				<td>@item.SerialNumber?.Name</td>
-				<td>@item.Category?.Name</td>
-				<td>
-					 <a asp-action="Edit" asp-route-id="@item.Id" >Edit</a>
-					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>   1945
-				</td>  
-			</tr>
-		}
-	</tbody>
-
-</table>
+<style>
+    .banner {
+        background-color: lightblue;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+</style>
